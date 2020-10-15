@@ -3,7 +3,7 @@
     "table": "^6.0.3"
   },
   "name": "terraform-analyze",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "analyze terraform apply output - times and modules",
   "main": "terraform-analyze.js",
   "devDependencies": {},
