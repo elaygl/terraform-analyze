@@ -9,3 +9,4 @@ Get time of each module creation in terraform apply
 
 ## Screenshot 
 
+![Example output](docs/resource-list.png?raw=true "Example output")
