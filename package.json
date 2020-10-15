@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "table": "^6.0.3"
+  },
+  "name": "terraform-analyze",
+  "version": "0.0.1",
+  "description": "analyze terraform apply output - times and modules",
+  "main": "terraform-analyze.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "terraform"
+  ],
+  "bin": {
+    "terraform-analyze": "./terraform-analyze.js"
+  },
+  "author": "elaygl@gmail.com",
+  "license": "MIT"
+}
