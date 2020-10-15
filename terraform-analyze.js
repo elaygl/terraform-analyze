@@ -25,32 +25,35 @@ const getTimeColor = (parsedTime) => {
 }
 
 const analyzeTerraformOutput = (output) => {
-    const moduleToTimeMap = {}
-    output
-        .split('\n')
-        .forEach((line, i) => {
-            const lineMatch = line.match(/(module.*): Creation complete after (\d.*) \[/);
+    try {
+        const moduleToTimeMap = {}
+        output
+            .split('\n')
+            .forEach((line, i) => {
+                const lineMatch = line.match(/(module.*): Creation complete after (\d.*) \[/);
 
-            if (lineMatch) {
-                const [, moduleName, elapsedTime] = lineMatch;
-                console.log('line', moduleName, elapsedTime)
-                moduleToTimeMap[moduleName] = elapsedTime;
-            }
-        });
+                if (lineMatch) {
+                    const [, moduleName, elapsedTime] = lineMatch;
+                    moduleToTimeMap[moduleName] = elapsedTime;
+                }
+            });
 
-    const entries = Object.entries(moduleToTimeMap);
-    if (!entries.length) return;
+        const entries = Object.entries(moduleToTimeMap);
+        if (!entries.length) return;
 
-    const parsedEntries = entries
-        .map(entry => [entry[0], { parsed: parseTerraformTime(entry[1]), elapsed: entry[1] }])
-        .filter(entry => entry[1].parsed > 10);
-    parsedEntries.sort((a, b) => b[1].parsed - a[1].parsed)
-    const tableData = [
-        ['Module Name', 'Time'],
-        ...parsedEntries.map(entry => [entry[0], getTimeColor(entry[1].parsed)(entry[1].elapsed)])
-    ];
-    console.log('Top long resource creation:')
-    console.log(table(tableData));
+        const parsedEntries = entries
+            .map(entry => [entry[0], { parsed: parseTerraformTime(entry[1]), elapsed: entry[1] }])
+            .filter(entry => entry[1].parsed > 10);
+        parsedEntries.sort((a, b) => b[1].parsed - a[1].parsed)
+        const tableData = [
+            ['Module Name', 'Time'],
+            ...parsedEntries.map(entry => [entry[0], getTimeColor(entry[1].parsed)(entry[1].elapsed)])
+        ];
+        console.log('Top long resource creation:')
+        console.log(table(tableData));
+    } catch (err) {
+        console.error('failed to analyze terraform output', err);
+    }
 }
 
 let data = '';
