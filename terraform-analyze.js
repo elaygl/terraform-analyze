@@ -22,9 +22,11 @@ const analyzeTerraformOutput = (output) => {
     output
         .split('\n')
         .forEach((line, i) => {
-            const lineMatch = line.match(/(module.*): (Still creating...) \[(.*) elapsed\]/);
+            const lineMatch = line.match(/(module.*): Creation complete after (\d.*) \[/);
+
             if (lineMatch) {
-                const [, moduleName, , elapsedTime] = lineMatch;
+                const [, moduleName, elapsedTime] = lineMatch;
+                console.log('line', moduleName, elapsedTime)
                 moduleToTimeMap[moduleName] = elapsedTime;
             }
         });
