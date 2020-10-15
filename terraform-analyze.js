@@ -55,6 +55,7 @@ const analyzeTerraformOutput = (output) => {
 
 let data = '';
 process.stdin.on('data', function (chunk) {
+    console.log(chunk);
     data += chunk;
 });
 
