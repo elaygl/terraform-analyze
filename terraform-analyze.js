@@ -58,11 +58,8 @@ const analyzeTerraformOutput = (output) => {
 
 let data = '';
 process.stdin.on('data', function (chunk) {
-    const trimmedChunk = chunk.trim();
-    if (!trimmedChunk) return;
-    
-    console.log(trimmedChunk);
-    data += trimmedChunk;
+    process.stdout.write(chunk);
+    data += chunk;
 });
 
 process.stdin.on('end', function () {
