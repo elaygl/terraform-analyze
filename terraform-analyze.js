@@ -2,9 +2,7 @@
 
 const { table } = require('table')
 const chalk = require('chalk');
-
-process.stdin.resume();
-process.stdin.setEncoding('utf8');
+const fs = require('fs');
 
 const parseTerraformTime = (tfTime) => {
     const timeMatch = tfTime.match(/(\d*\D)/g);
@@ -56,12 +54,5 @@ const analyzeTerraformOutput = (output) => {
     }
 }
 
-let data = '';
-process.stdin.on('data', function (chunk) {
-    process.stdout.write(chunk);
-    data += chunk;
-});
-
-process.stdin.on('end', function () {
-    analyzeTerraformOutput(data)
-});
+const terraformOutput = fs.readFileSync('./output.txt', 'utf-8');
+analyzeTerraformOutput(terraformOutput);
