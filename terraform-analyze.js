@@ -74,6 +74,14 @@ const analyzeTerraformOutput = (output) => {
                         if(localExec) {
                             if(!modules[moduleNameWithoutLocalExec].localExec) modules[moduleNameWithoutLocalExec].localExec = {};
                             const localExec = modules[moduleNameWithoutLocalExec].localExec
+
+                            if(body.includes('Executing:')) {
+                                const [,executing] = body.match(/^Executing: \[\"\/bin\/sh\" "-c" "(.*)\"\]$/);
+                                localExec.executing = {};
+                                localExec.executing.fileName = path.join(moduleNameWithoutLocalExec.replace(/[^a-z0-9._-]/gi, '_').toLowerCase(), 'executing.html')
+                                localExec.executing.body = executing.split('\\n').map((data) => ({body: data}));
+                            }
+
                             if(!localExec.body) localExec.body = [];
                             localExec.body.push({body, startColor, endColor});
                             localExec.fileName = path.join(moduleNameWithoutLocalExec.replace(/[^a-z0-9._-]/gi, '_').toLowerCase(),'localExec.html')
@@ -113,6 +121,7 @@ const analyzeTerraformOutput = (output) => {
                 module: entry[1].moduleName,
                 link: entry[1].fileName,
                 linkLocalExec: entry[1].localExec ? entry[1].localExec.fileName : undefined,
+                linkExecuting: entry[1].localExec && entry[1].localExec.executing ? entry[1].localExec.executing.fileName : undefined,
                 time: entry[1].elapsedTime,
                 color: entry[1].colorHtml
         }))}));
@@ -129,12 +138,20 @@ const analyzeTerraformOutput = (output) => {
 
             if(value.localExec) {
                 const fileNameLocalExec = path.join(REPORT_DIR, value.localExec.fileName);
-                ensureDirectoryExistence(fileNameLocalExec)
                 fs.writeFileSync(fileNameLocalExec, pug.renderFile('templates/log.pug', {
                     module: value.moduleName,
                     time: value.elapsedTime,
                     body: value.localExec.body.map((data) => data.body).join('\n')
                 }));
+
+                if(value.localExec.executing) {
+                    const fileNameExecuting = path.join(REPORT_DIR, value.localExec.executing.fileName);
+                    fs.writeFileSync(fileNameExecuting, pug.renderFile('templates/log.pug', {
+                        module: value.moduleName,
+                        time: value.elapsedTime,
+                        body: value.localExec.executing.body.map((data) => data.body).join('\n')
+                    }));
+                }
             }
         })
 

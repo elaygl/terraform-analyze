@@ -1,3 +1,13 @@
+head
+    style(type="text/css").
+        body {
+            padding: 5px 0;
+            margin: 0
+        }
+
+        .link {
+            margin: 0 5px;
+        }
 div
     table
         thead
@@ -11,7 +21,9 @@ div
                     td
                         a(href='./' + value.link) #{value.module}
                     td #{value.time}
-                    td(style={width: '150px', display: 'flex', 'justify-content': 'space-between'})
-                        a(href='./' + value.link) Terraform
+                    td(style={width: '100%', display: 'flex', 'justify-content': 'space-between'})
+                        a(class='link' href='./' + value.link) Terraform
                         if value.linkLocalExec
-                            a(href='./' + value.linkLocalExec) Local-exec
+                            a(class='link' href='./' + value.linkLocalExec) Local-exec
+                        if value.linkExecuting
+                            a(class='link' href='./' + value.linkExecuting) Execution
