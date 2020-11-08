@@ -1,0 +1,17 @@
+div
+    table
+        thead
+            tr
+                th Module
+                th Time
+                th Links
+        tbody
+            each value in values
+                tr(style={color: value.color})
+                    td
+                        a(href='./' + value.link) #{value.module}
+                    td #{value.time}
+                    td(style={width: '150px', display: 'flex', 'justify-content': 'space-between'})
+                        a(href='./' + value.link) Terraform
+                        if value.linkLocalExec
+                            a(href='./' + value.linkLocalExec) Local-exec
