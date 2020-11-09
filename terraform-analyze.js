@@ -114,7 +114,7 @@ const analyzeTerraformOutput = (output) => {
 
 
 
-        fs.writeFileSync(path.join(REPORT_DIR,'index.html'), pug.renderFile('templates/table.pug', {
+        fs.writeFileSync(path.join(REPORT_DIR,'index.html'), pug.renderFile(path.join(__dirname,'templates/table.pug'), {
             values: Object.entries(modules)
             .sort((a, b) => b[1].parsedTime - a[1].parsedTime)
             .map(entry => ({
@@ -130,7 +130,7 @@ const analyzeTerraformOutput = (output) => {
             const fileNameTerraform = path.join(REPORT_DIR, value.fileName);
             ensureDirectoryExistence(fileNameTerraform)
 
-            fs.writeFileSync(fileNameTerraform, pug.renderFile('templates/log.pug', {
+            fs.writeFileSync(fileNameTerraform, pug.renderFile(path.join(__dirname,'templates/log.pug'), {
                 module: value.moduleName,
                 time: value.elapsedTime,
                 body: value.body.map((data) => data.body).join('\n')
@@ -138,7 +138,7 @@ const analyzeTerraformOutput = (output) => {
 
             if(value.localExec) {
                 const fileNameLocalExec = path.join(REPORT_DIR, value.localExec.fileName);
-                fs.writeFileSync(fileNameLocalExec, pug.renderFile('templates/log.pug', {
+                fs.writeFileSync(fileNameLocalExec, pug.renderFile(path.join(__dirname,'templates/log.pug'), {
                     module: value.moduleName,
                     time: value.elapsedTime,
                     body: value.localExec.body.map((data) => data.body).join('\n')
@@ -146,7 +146,7 @@ const analyzeTerraformOutput = (output) => {
 
                 if(value.localExec.executing) {
                     const fileNameExecuting = path.join(REPORT_DIR, value.localExec.executing.fileName);
-                    fs.writeFileSync(fileNameExecuting, pug.renderFile('templates/log.pug', {
+                    fs.writeFileSync(fileNameExecuting, pug.renderFile(path.join(__dirname,'templates/log.pug'), {
                         module: value.moduleName,
                         time: value.elapsedTime,
                         body: value.localExec.executing.body.map((data) => data.body).join('\n')
