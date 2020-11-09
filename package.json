@@ -4,14 +4,18 @@
     "pug": "^3.0.0",
     "table": "^6.0.3"
   },
-  "name": "terraform-analyze",
-  "version": "1.0.0",
+  "name": "@bridgecrew/terraform-analyze",
+  "version": "1.0.1",
   "description": "analyze terraform apply output - times and modules",
   "main": "terraform-analyze.js",
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "files":  [
+    "terraform-analyze.js",
+    "templates"
+  ],
   "keywords": [
     "terraform"
   ],
